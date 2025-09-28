@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <title>이력서 포트폴리오</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    body { font-family: 'Segoe UI', sans-serif; margin: 0; background: #f7f7f7; }
+    .navbar {
+      display: flex;
+      background: #222;
+      color: #fff;
+      padding: 0.5rem 2rem;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .navbar .nav-links {
+      display: flex;
+      gap: 1.5rem;
+    }
+    .navbar a {
+      color: #fff;
+      text-decoration: none;
+      font-weight: 500;
+      padding: 0.5rem 1rem;
+      border-radius: 4px;
+      transition: background 0.2s;
+    }
+    .navbar a.active, .navbar a:hover {
+      background: #444;
+    }
+    .container {
+      padding-top: 2rem;
+      background: #fff;
+      border-radius: 10px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.07);
+      min-height: 400px;
+    }
+    .sub-container {
+      width: 33%;
+      margin: 0; /* flex row에서 margin 제거 */
+      background: #fff;
+      border-radius: 10px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.07);
+      padding: 2rem;
+      min-height: 400px;
+      text-align: center;
+      box-sizing: border-box;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      /* 아래 스타일은 각 sub-container별 inline style에서 중복되므로, 필요시 조정 */
+    }
+    .profile-img-wrapper {
+      width: 240px;
+      height: 240px;
+      display: flex;
+      align-items: flex-start; /* 상단 정렬 */
+      justify-content: center;
+      overflow: hidden;
+      border-radius: 12px;
+      margin: 0 auto;
+      background: #fff;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    }
+    .profile-img {
+      width: 100%;
+      height: auto;
+      display: block;
+      object-fit: contain; /* 윗부분이 안 짤리게 */
+      object-position: top; /* 윗부분이 보이도록 */
+      /* border: 5px solid #333;  윤곽선 제거 */
+    }
+    .profile-info {
+      text-align: center;
+    }
+    .page-info {
+      text-align: center;
+    }
+    .profile-info h1 {
+      margin: 0.5rem 0 0.2rem 0;
+      font-size: 2rem;
+    }
+    .profile-info .contact {
+      color: #555;
+      font-size: 1.1rem;
+    }
+    .about-section {
+      width: 700px;
+      margin-top: 1rem;
+      font-size: 1.1rem;
+      line-height: 1.7;
+      color: #333;
+      white-space: pre-line;
+    }
+    .projects-list {
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+      margin-top: 1rem;
+    }
+    .project-card {
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+      background: #f3f3f3;
+      border-radius: 8px;
+      padding: 1rem 1.5rem;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.04);
+      margin: 0 auto;
+    }
+    .project-card h3 {
+      margin: 0 0 0.5rem 0;
+    }
+    .project-card a {
+      color: #1976d2;
+      text-decoration: underline;
+      font-size: 1rem;
+    }
+    @media (max-width: 900px) {
+      #page-1 .profile-flex-row {
+        flex-direction: column !important;
+        gap: 1.5rem !important;
+      }
+      .sub-container {
+        flex: 1 1 100%;
+        min-width: 0;
+        width: 100%;
+        margin-bottom: 1.5rem;
+        min-height: unset;
+      }
+    }
+    @media (max-width: 600px) {
+      .container { padding: 1rem; }
+      .navbar { flex-direction: column; align-items: flex-start; }
+      .navbar .nav-links { gap: 0.5rem; }
+      .profile-img-wrapper { width: 140px; height: 140px; }
+    }
+    .toActive {
+      text-align: center;
+    }
+    .game-card {
+        width: 680px;
+        height: 200px;
+        padding: 20px;
+        text-align: left;
+        border-radius: 16px;
+        border: 2px solid gray;
+        display: grid;
+        grid-template-columns: 200px 460px;
+        gap: 20px;
+        background-color: #60affe;
+    }
+    .game-card-image {
+        width: 200px;
+        height: 200px;
+        object-fit: cover;
+        border-radius: 8px;
+        border: 2px solid gray;
+        display: block;
+    }
+    .game-card-textbox {
+        width: 460px;
+        height: 200px;
+        border-radius: 8px;
+        display: grid;
+        grid-template-rows: 40px 100px, 40px; /* 가로로 나열 */
+        gap: 10px;
+    }
+    .game-card-title {
+        font-size: 24px;   /* 글씨 크기 */
+        font-weight: bold; /* 굵기 */
+        line-height: 40px; /* 높이에 맞춰 세로 중앙 정렬 */
+        text-align: center;
+    }
+    .game-card-description {
+        width: 460px;
+        height: 100px;
+        font-size: 18px;   /* 글씨 크기 */
+        text-align: center;
+    }
+    .game-card-using {
+        font-size: 18px;   /* 글씨 크기 */
+        font-weight: bold; /* 굵기 */
+        width: 460px;
+        height: 20px;
+        text-align: center;
+    }
+    .introduction-circle {
+        width: 180px;
+        height: 90px; 
+        border-radius: 50%; 
+        background: #e3f0ff; 
+        display: flex; 
+        align-items: center; 
+        justify-content: center; 
+        font-size: 2.2rem; 
+        font-weight: bold; 
+        color: #1976d2;
+        box-shadow: 0 2px 12px 0 rgba(25, 118, 210, 0.10);
+        margin-bottom: 1.2rem;
+    }
+  </style>
+  </style>
+</head>
+<body>
+  <nav class="navbar">
+    <a style="font-weight:bold; font-size:1.2rem;" href="#" onclick="showPage(0); return false;" class = "toActive">포트폴리오</a>
+    <div class="nav-links">
+      <a href="#" onclick="showPage(1); return false;" class = "toActive">프로필</a>
+      <a href="#" onclick="showPage(2); return false;" class = "toActive">자기소개</a>
+      <a href="#" onclick="showPage(3); return false;" class = "toActive">프로젝트</a>
+    </div>
+  </nav>
+  <div class="container">
+    <!-- Page 1: Introduction -->
+    <div id="page-0" class="page-section">
+        <div class="profile-info" style="transform: scale(0.8); transform-origin: top center;">
+            <div class="profile-img-wrapper">
+              <img src="./img/UkhoShin.jpeg" alt="프로필 사진" class="profile-img">
+            </div>
+            <h1>신욱호</h1>
+            <div class="contact">
+              <strong>Mail:</strong> <span id="email">fhaldh2020@gmail.com</span><br style="line-height:0.5;">
+              <strong>Phone:</strong> <span id="phone">010-2215-4197</span>
+            </div>
+        </div>
+        <div class="page-info">
+          <h2>안녕하세요. 개발자 신욱호의 포트폴리오 웹페이지입니다.</h2>
+          <div>
+            <h3>우측 상단 메뉴에서 프로필, 자기소개, 프로젝트를 확인해 주세요.</h3>
+            <div style="font-size:0.95rem; color:#888; font-weight:400;">
+              본 페이지는 오직 취업용 포트폴리오로만 쓰일 것임을 밝힙니다.<br>
+              포트폴리오는 지속적으로 업데이트 됩니다. 
+              <span style="color:#1976d2;">Last Update : 2025-09-28</span>
+            </div>
+          </div>
+        </div>
+    </div>
+    <!-- Page 1: Profile -->
+    <div id="page-1" class="page-section" style="display:none;">
+      <div class="profile-flex-row" style="display: flex; padding-top: 2rem; flex-direction: row; justify-content: space-between; align-items: stretch; gap: 2.5rem; width: 100%; background: linear-gradient(120deg, #e3f0ff 0%, #f9f9f9 100%); border-radius: 1.5rem; box-shadow: 0 6px 32px 0 rgba(25, 118, 210, 0.10);">
+        <!-- Left: Profile -->
+        <div class="sub-container" style="background: #fff; border-radius: 1rem; box-shadow: 0 2px 12px 0 rgba(25, 118, 210, 0.07); padding: 2rem 1.2rem;">
+          <div class="profile-img-wrapper" style="box-shadow: 0 4px 16px 0 rgba(25, 118, 210, 0.13); border: 4px solid #e3f0ff;">
+            <img src="./img/UkhoShin.jpeg" alt="프로필 사진" class="profile-img"">
+          </div>
+          <h1 style="margin-top: 1.2rem; font-size: 2rem; color: black; letter-spacing: 1px;">신욱호</h1>
+          <div class="contact" style="text-align:center; font-size: 1.08rem;">
+            <div style="margin-bottom:0.3rem;">
+              <span style="background:#e3f0ff; color:black; border-radius:0.5rem; padding:0.2rem 0.7rem; font-weight:600;">
+                Mail: fhaldh2020@gmail.com
+              </span>
+            </div>
+            <div>
+              <span style="background:#e3f0ff; color:black; border-radius:0.5rem; padding:0.2rem 0.7rem; font-weight:600;">
+                Phone: 010-2215-4197
+              </span>
+            </div>
+          </div>
+        </div>
+        <!-- Center: Skills -->
+        <div class="sub-container" style="background: #f5faff; border-radius: 1rem; box-shadow: 0 2px 12px 0 rgba(25, 118, 210, 0.06); padding: 2rem 1.2rem;">
+          <h2 style="margin-bottom: 1.2rem; color: black; font-size: 1.5rem; letter-spacing: 1px;">보유 스킬</h2>
+          <ul style="list-style: none; padding: 0; margin: 0; font-size: 1.13rem; text-align: center; display: flex; flex-direction: column; gap: 0.7rem;">
+            <li style="background: #e3f0ff; border-radius: 0.7rem; padding: 0.5rem 1.2rem; color: #1976d2; font-weight: 500; box-shadow: 0 1px 4px 0 rgba(25, 118, 210, 0.07);">
+              Python, Java, C/C#/C++
+            </li>
+            <li style="background: #e3f0ff; border-radius: 0.7rem; padding: 0.5rem 1.2rem; color: #1976d2; font-weight: 500; box-shadow: 0 1px 4px 0 rgba(25, 118, 210, 0.07);">
+              HTML/CSS/JavaScript
+            </li>
+            <li style="background: #e3f0ff; border-radius: 0.7rem; padding: 0.5rem 1.2rem; color: #1976d2; font-weight: 500; box-shadow: 0 1px 4px 0 rgba(25, 118, 210, 0.07);">
+              </i>Unity
+            </li>
+            <li style="background: #e3f0ff; border-radius: 0.7rem; padding: 0.5rem 1.2rem; color: #1976d2; font-weight: 500; box-shadow: 0 1px 4px 0 rgba(25, 118, 210, 0.07);">
+              Github, Cursor, Vscode
+            </li>
+          </ul>
+        </div>
+        <!-- Right: Education & Certificates -->
+        <div class="sub-container" style="background: #fff; border-radius: 1rem; box-shadow: 0 2px 12px 0 rgba(25, 118, 210, 0.07); padding: 2rem 1.2rem;">
+          <div style="margin-bottom: 1.5rem;">
+            <h2 style="margin-bottom: 0.7rem; color: black; font-size: 1.5rem; letter-spacing: 1px;">학력</h2>
+            <ul style="list-style: none; padding: 0; margin: 0; font-size: 1.2rem; display: flex; flex-direction: column; gap: 0.5rem;">
+              <li style="background: #e3f0ff; border-radius: 0.5rem; padding: 0.4rem 1rem; color: #1976d2; font-weight: 500;">
+                충북과학고등학교
+              </li>
+              <li style="background: #e3f0ff; font-size: 1rem; border-radius: 0.5rem; padding: 0.4rem 1rem; color: #0080ff; font-weight: 500;">
+                2017.02 졸업
+              </li>
+              <li style="background: #e3f0ff; border-radius: 0.5rem; padding: 0.4rem 1rem; color: #0080ff; font-weight: 500;">
+                한국과학기술원(KAIST) 전산학부
+              </li>
+              <li style="background: #e3f0ff; font-size: 1rem; border-radius: 0.5rem; padding: 0.4rem 1rem; color: #1976d2; font-weight: 500;">
+                2026.02 졸업예정
+              </li>
+            </ul>
+          </div>
+          <div>
+            <h2 style="margin-bottom: 0.7rem; color: black; font-size: 1.25rem; letter-spacing: 1px;">자격증</h2>
+            <ul style="list-style: none; padding: 0; margin: 0; font-size: 1.08rem; display: flex; flex-direction: column; gap: 0.5rem;">
+              <li style="background: #e3f0ff; border-radius: 0.5rem; padding: 0.4rem 1rem; color: #1976d2; font-weight: 500;">
+                정보처리기사 - 한국산업인력공사
+              </li>
+              <li style="background: #e3f0ff; border-radius: 0.5rem; padding: 0.4rem 1rem; color: #1976d2; font-weight: 500;">
+                Cos Pro Python 1급 - Ybm IT
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <!-- FontAwesome CDN for icons (optional, can be removed if not wanted) -->
+      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"/>
+    </div>
+    <!-- Page 2: About -->
+    <div id="page-2" class="page-section" style="display:none; padding-top: 2rem; text-align: center;">
+      <div style="display: flex; justify-content: center; gap: 3rem; align-items: flex-start; margin-top: 2rem;">
+        <!-- 첫번째 원 -->
+        <div style="display: flex; flex-direction: column; align-items: center;">
+          <div class="introduction-circle">
+            열정
+          </div>
+          <div style="max-width: 200px; font-size: 1.08rem; color: #333;">
+            새로운 분야에 대한 호기심과 학습 능력을 바탕으로 꾸준히 성장하며 팀에 기여합니다.
+          </div>
+        </div>
+        <!-- 두번째 원 -->
+        <div style="display: flex; flex-direction: column; align-items: center;">
+          <div class="introduction-circle">
+            통찰력
+          </div>
+          <div style="max-width: 200px; font-size: 1.08rem; color: #333;">
+            주어진 코드를 뜯어 어떤 방식으로 프로그램이 짜여져 있는지 파악하고 니즈에 맞게 수정하거나 다른 곳에 상황에 맞게 적용하는 능력이 뛰어납니다.
+          </div>
+        </div>
+        <!-- 세번째 원 -->
+        <div style="display: flex; flex-direction: column; align-items: center;">
+          <div class="introduction-circle">
+            소통
+          </div>
+          <div style="max-width: 200px; font-size: 1.08rem; color: #333;">
+            프로젝트 개발주기에 대해 이해하고 있으며, 여러 프로젝트를 통해 Github 등 협업 환경에 익숙합니다.
+          </div>
+        </div>
+      </div>
+    <div style="display: flex; flex-direction: row; gap: 2.5rem; justify-content: center; margin-top: 2rem;">
+      <!-- 네번째 원 -->
+      <div style="display: flex; flex-direction: column; align-items: center;">
+        <div class="introduction-circle">
+            폭넓은 지식
+        </div>
+        <div style="max-width: 200px; font-size: 1.08rem; color: #333;">
+          Database, NLP, Testing, HCI, Distributed System 등 다양한 방면의 지식을 가지고 있으며, 컴퓨팅적 사고방식에 익숙합니다.
+        </div>
+      </div>
+      <!-- 다섯번째 원 -->
+      <div style="display: flex; flex-direction: column; align-items: center;">
+        <div class="introduction-circle">
+          AI 활용능력
+        </div>
+        <div style="max-width: 200px; font-size: 1.08rem; color: #333;">
+          AI를 효율적으로 활용해 높은 생산성을 발휘합니다. <br> 이 웹페이지는 Cursor Vibe Coding으로 뼈대를 만들었습니다.
+        </div>
+      </div>
+    </div>
+    </div>
+    <!-- Page 3: Projects -->
+    <div id="page-3" class="page-section" style="display:none; text-align: center; padding-top: 2rem;">
+      <h1>프로젝트</h1>
+      <h4>프로젝트는 지속적으로 업데이트 됩니다. <span style="color:#1976d2;"> Last Update : 2025-09-28</span></h4>
+      <div class="projects-list">
+        <div class="project-card" style="text-align: center"">
+          <h3>Unity Games (클릭 시 이동합니다)</h3>
+          <div class="game-card" onclick="location.href='./WebGames/MolangFlight/index.html';">
+            <img src="./img/molangflightimg0.png" alt="게임 이미지" class="game-card-image">
+            <div class="game-card-textbox">
+              <div class="game-card-title">Molang Flight!</div>
+              <div class="game-card-description">
+                드래곤플라이트 Replication 프로젝트입니다. <br>
+                참조: <a href="https://www.youtube.com/watch?v=rJE6bhVUNhk"> https://www.youtube.com/watch?v=rJE6bhVUNhk" </a> <br>
+                추가: 자체제작 Sprite 사용, 운석 낙하(경고선), 게임 클리어 패널 생성, 게임 오버시 충돌 몹 표현, 동전 벽 반사.
+              </div>
+              <div class="game-card-using">
+                Using - Unity2D | C#
+              </div>
+            </div>
+          </div>
+          <div class="game-card" onclick="location.href='./WebGames/MolangPang/index.html';">
+            <img src="./img/molangpangimg0.png" alt="게임 이미지" class="game-card-image">
+            <div class="game-card-textbox">
+              <div class="game-card-title">Molang Pang!</div>
+              <div class="game-card-description">
+                애니팡 Replication 프로젝트입니다. <br>
+                참조: X <br>
+                구현: 슬라임 생성 및 추가, 깔맞춤 점수, 타이머, 스왑 처리, 폭탄 (게이지, 연쇄폭발)
+              </div>
+              <div class="game-card-using">
+                Using - Unity2D | C#
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <script>
+    function showPage(idx) {
+      const pages = document.querySelectorAll('.page-section');
+      pages.forEach((p, i) => {
+        p.style.display = (i === idx) ? '' : 'none';
+      });
+      const navLinks = document.querySelectorAll('.toActive');
+      navLinks.forEach((a, i) => {
+        if (i === idx && i != 0) a.classList.add('active');
+        else a.classList.remove('active');
+      });
+    }
+  </script>
+</body>
+</html>
+
+
+
